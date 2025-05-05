@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.21",
-    "daisyui": "^4.12.14",
+    "daisyui": "^4.12.24",
     "mongoose": "^8.0.3",
     "next": "^14.2.28",
     "postcss": "^8.5.3",
