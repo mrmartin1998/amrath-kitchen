@@ -277,3 +277,181 @@ src/
    - Post creation flow
    - Category management
    - Image upload process 
+
+# Amrath Kitchen - Technical Design Flow
+
+## 1. Database Design
+
+### MongoDB Collections
+1. Users Collection
+```javascript
+{
+  _id: ObjectId,
+  name: String,
+  email: String,
+  password: String,
+  role: String, // 'chef' or 'staff'
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+2. Recipes Collection
+```javascript
+{
+  _id: ObjectId,
+  name: String,
+  description: String,
+  ingredients: [{
+    name: String,
+    quantity: String,
+    unit: String
+  }],
+  instructions: [String],
+  photos: [String],
+  videoUrl: String,
+  portionSize: String,
+  preparationTime: Number,
+  category: String,
+  createdBy: ObjectId,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+## 2. API Routes Design
+
+### Authentication Routes
+```javascript
+// POST /api/auth/register
+// POST /api/auth/login
+// GET /api/auth/me
+// POST /api/auth/logout
+```
+
+### Recipe Routes
+```javascript
+// GET /api/recipes
+// POST /api/recipes
+// GET /api/recipes/[id]
+// PUT /api/recipes/[id]
+// DELETE /api/recipes/[id]
+```
+
+### User Routes
+```javascript
+// GET /api/users
+// GET /api/users/[id]
+// PUT /api/users/[id]
+// DELETE /api/users/[id]
+```
+
+## 3. Component Structure
+
+### Layout Components
+```javascript
+// src/components/layout/
+- Navbar.js
+- Sidebar.js
+- Footer.js
+- Layout.js
+```
+
+### Auth Components
+```javascript
+// src/components/auth/
+- LoginForm.js
+- RegisterForm.js
+- AuthLayout.js
+```
+
+### Recipe Components
+```javascript
+// src/components/recipes/
+- RecipeCard.js
+- RecipeForm.js
+- RecipeList.js
+- RecipeDetail.js
+```
+
+### Common Components
+```javascript
+// src/components/common/
+- Button.js
+- Input.js
+- Card.js
+- Modal.js
+- Alert.js
+```
+
+## 4. State Management
+
+### Context Providers
+```javascript
+// src/context/
+- AuthContext.js
+- RecipeContext.js
+- ThemeContext.js
+```
+
+## 5. Utility Functions
+
+### API Helpers
+```javascript
+// src/utils/
+- api.js
+- auth.js
+- validation.js
+```
+
+### Database Helpers
+```javascript
+// src/lib/
+- mongodb.js
+- models/
+  - User.js
+  - Recipe.js
+```
+
+## 6. Security Implementation
+
+### Authentication
+- JWT token-based authentication
+- Password hashing with bcrypt
+- Protected API routes
+- Role-based access control
+
+### Data Validation
+- Input sanitization
+- Schema validation
+- Error handling middleware
+
+## 7. File Structure
+```
+src/
+  ├── app/
+  │   ├── (auth)/
+  │   │   ├── login/
+  │   │   └── register/
+  │   ├── recipes/
+  │   │   ├── [id]/
+  │   │   └── new/
+  │   └── dashboard/
+  ├── components/
+  │   ├── layout/
+  │   ├── auth/
+  │   ├── recipes/
+  │   └── common/
+  ├── context/
+  ├── lib/
+  ├── utils/
+  └── styles/
+```
+
+## 8. Environment Variables
+```env
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+``` 
