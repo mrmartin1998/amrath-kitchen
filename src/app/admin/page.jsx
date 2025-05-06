@@ -42,11 +42,25 @@ export default function AdminPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Simulate API fetch with sample data
-    setTimeout(() => {
-      setRecipes(sampleRecipes);
-      setLoading(false);
-    }, 500);
+    // Fetch recipes from API
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes');
+        if (!response.ok) throw new Error('Failed to fetch recipes');
+        const apiRecipes = await response.json();
+        
+        // Combine API recipes with sample recipes
+        setRecipes([...apiRecipes, ...sampleRecipes]);
+      } catch (err) {
+        setError(err.message);
+        // If API fails, at least show sample recipes
+        setRecipes(sampleRecipes);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipes();
   }, []);
 
   const handleDelete = async (id) => {
