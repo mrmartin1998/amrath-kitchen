@@ -37,30 +37,26 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: [
-      "light",
-      "dark",
-      {
-        nomad: {
-          "primary": "#0118D8",
-          "primary-content": "#ffffff",
-          "secondary": "#1B56FD",
-          "secondary-content": "#ffffff",
-          "accent": "#E9DFC3",
-          "accent-content": "#1f2937",
-          "neutral": "#2a323c",
-          "neutral-content": "#ffffff",
-          "base-100": "#FFF8F8",
-          "base-200": "#f9fafb",
-          "base-300": "#d1d5db",
-          "base-content": "#1f2937",
-          "info": "#3abff8",
-          "success": "#36d399",
-          "warning": "#fbbd23",
-          "error": "#f87272"
-        },
-      }
-    ],
+    themes: [{
+      nomad: {
+        "primary": "#0118D8",
+        "primary-content": "#ffffff",
+        "secondary": "#1B56FD",
+        "secondary-content": "#ffffff",
+        "accent": "#E9DFC3",
+        "accent-content": "#1f2937",
+        "neutral": "#2a323c",
+        "neutral-content": "#ffffff",
+        "base-100": "#FFF8F8",
+        "base-200": "#f9fafb",
+        "base-300": "#d1d5db",
+        "base-content": "#1f2937",
+        "info": "#3abff8",
+        "success": "#36d399",
+        "warning": "#fbbd23",
+        "error": "#f87272"
+      },
+    }],
     base: true,
     styled: true,
     utils: true,
