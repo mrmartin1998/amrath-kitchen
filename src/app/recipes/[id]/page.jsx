@@ -4,6 +4,74 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
+// Sample recipe data (same as in the list page)
+const sampleRecipes = [
+  {
+    _id: '1',
+    name: 'Classic Margherita Pizza',
+    description: 'Traditional Italian pizza with fresh basil, mozzarella, and tomato sauce. Made with hand-tossed dough and baked in a wood-fired oven.',
+    preparationTime: 45,
+    portionSize: '2 servings',
+    category: 'Italian',
+    ingredients: [
+      { name: 'Pizza Dough', quantity: '250', unit: 'g' },
+      { name: 'Mozzarella', quantity: '200', unit: 'g' },
+      { name: 'Fresh Basil', quantity: '10', unit: 'leaves' },
+      { name: 'Tomato Sauce', quantity: '100', unit: 'ml' }
+    ],
+    instructions: [
+      'Preheat oven to 450°F (230°C)',
+      'Roll out the pizza dough',
+      'Spread tomato sauce evenly',
+      'Add torn mozzarella pieces',
+      'Bake for 15-20 minutes',
+      'Add fresh basil leaves'
+    ]
+  },
+  {
+    _id: '2',
+    name: 'Chicken Teriyaki Bowl',
+    description: 'Tender chicken pieces glazed with homemade teriyaki sauce, served over steamed rice with vegetables.',
+    preparationTime: 30,
+    portionSize: '4 servings',
+    category: 'Japanese',
+    ingredients: [
+      { name: 'Chicken Thighs', quantity: '500', unit: 'g' },
+      { name: 'Soy Sauce', quantity: '60', unit: 'ml' },
+      { name: 'Mirin', quantity: '60', unit: 'ml' },
+      { name: 'Steamed Rice', quantity: '2', unit: 'cups' }
+    ],
+    instructions: [
+      'Cut chicken into bite-sized pieces',
+      'Mix soy sauce and mirin',
+      'Cook chicken until golden',
+      'Add sauce and simmer',
+      'Serve over steamed rice'
+    ]
+  },
+  {
+    _id: '3',
+    name: 'Fresh Garden Salad',
+    description: 'Crisp mixed greens with seasonal vegetables and a light vinaigrette dressing. Perfect as a side dish or light meal.',
+    preparationTime: 15,
+    portionSize: '3 servings',
+    category: 'Salads',
+    ingredients: [
+      { name: 'Mixed Greens', quantity: '200', unit: 'g' },
+      { name: 'Cherry Tomatoes', quantity: '100', unit: 'g' },
+      { name: 'Cucumber', quantity: '1', unit: 'whole' },
+      { name: 'Olive Oil', quantity: '30', unit: 'ml' }
+    ],
+    instructions: [
+      'Wash and dry all vegetables',
+      'Cut tomatoes in half',
+      'Slice cucumber thinly',
+      'Mix vinaigrette',
+      'Toss all ingredients together'
+    ]
+  }
+];
+
 export default function RecipePage() {
   const params = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -11,21 +79,15 @@ export default function RecipePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchRecipe();
-  }, [params.id]);
-
-  const fetchRecipe = async () => {
-    try {
-      const response = await fetch(`/api/recipes/${params.id}`);
-      if (!response.ok) throw new Error('Failed to fetch recipe');
-      const data = await response.json();
-      setRecipe(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
+    // Simulate API fetch with sample data
+    setTimeout(() => {
+      const foundRecipe = sampleRecipes.find(r => r._id === params.id);
+      if (foundRecipe) {
+        setRecipe(foundRecipe);
+      }
       setLoading(false);
-    }
-  };
+    }, 500); // Small delay to show loading state
+  }, [params.id]);
 
   if (loading) {
     return (
