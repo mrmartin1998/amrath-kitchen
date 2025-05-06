@@ -6,12 +6,13 @@ import Link from 'next/link';
 // Sample recipe data
 const sampleRecipes = [
   {
-    _id: '1',
+    _id: 'sample_1',
     name: 'Classic Margherita Pizza',
     description: 'Traditional Italian pizza with fresh basil, mozzarella, and tomato sauce. Made with hand-tossed dough and baked in a wood-fired oven.',
     preparationTime: 45,
     portionSize: '2 servings',
     category: 'Italian',
+    isSample: true,
     ingredients: [
       { name: 'Pizza Dough', quantity: '250', unit: 'g' },
       { name: 'Mozzarella', quantity: '200', unit: 'g' },
@@ -28,12 +29,13 @@ const sampleRecipes = [
     ]
   },
   {
-    _id: '2',
+    _id: 'sample_2',
     name: 'Chicken Teriyaki Bowl',
     description: 'Tender chicken pieces glazed with homemade teriyaki sauce, served over steamed rice with vegetables.',
     preparationTime: 30,
     portionSize: '4 servings',
     category: 'Japanese',
+    isSample: true,
     ingredients: [
       { name: 'Chicken Thighs', quantity: '500', unit: 'g' },
       { name: 'Soy Sauce', quantity: '60', unit: 'ml' },
@@ -49,12 +51,13 @@ const sampleRecipes = [
     ]
   },
   {
-    _id: '3',
+    _id: 'sample_3',
     name: 'Fresh Garden Salad',
     description: 'Crisp mixed greens with seasonal vegetables and a light vinaigrette dressing. Perfect as a side dish or light meal.',
     preparationTime: 15,
     portionSize: '3 servings',
     category: 'Salads',
+    isSample: true,
     ingredients: [
       { name: 'Mixed Greens', quantity: '200', unit: 'g' },
       { name: 'Cherry Tomatoes', quantity: '100', unit: 'g' },
@@ -75,14 +78,41 @@ export default function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Simulate API fetch with sample data
-    setTimeout(() => {
-      setRecipes(sampleRecipes);
-      setLoading(false);
-    }, 1000); // Add a small delay to see loading state
+    // Fetch recipes from API
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes');
+        if (!response.ok) throw new Error('Failed to fetch recipes');
+        const apiRecipes = await response.json();
+        
+        // Combine API recipes with sample recipes
+        setRecipes([...apiRecipes, ...sampleRecipes]);
+      } catch (err) {
+        setError(err.message);
+        // If API fails, at least show sample recipes
+        setRecipes(sampleRecipes);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipes();
   }, []);
+
+  // Filter recipes based on search term and category
+  const filteredRecipes = recipes.filter(recipe => {
+    const matchesSearch = recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         recipe.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !selectedCategory || recipe.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  // Get unique categories from all recipes
+  const categories = [...new Set(recipes.map(recipe => recipe.category))];
 
   if (loading) {
     return (
@@ -118,9 +148,36 @@ export default function RecipesPage() {
         </div>
       </div>
 
+      {/* Search and Filter */}
+      <div className="p-4 bg-base-200">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Search recipes..."
+              className="input input-bordered w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="w-full sm:w-64">
+            <select
+              className="select select-bordered w-full"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* Recipe List */}
       <div className="p-4 space-y-4">
-        {recipes.map((recipe) => (
+        {filteredRecipes.map((recipe) => (
           <Link 
             href={`/recipes/${recipe._id}`} 
             key={recipe._id}
@@ -128,7 +185,12 @@ export default function RecipesPage() {
           >
             <div className="card bg-base-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="card-body p-4">
-                <h2 className="card-title text-lg">{recipe.name}</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="card-title text-lg">{recipe.name}</h2>
+                  {recipe.isSample && (
+                    <span className="badge badge-ghost">Sample</span>
+                  )}
+                </div>
                 <p className="text-sm text-base-content/70 line-clamp-2">
                   {recipe.description}
                 </p>
@@ -144,9 +206,9 @@ export default function RecipesPage() {
           </Link>
         ))}
 
-        {recipes.length === 0 && (
+        {filteredRecipes.length === 0 && (
           <div className="text-center py-8 text-base-content/60">
-            No recipes found
+            {searchTerm || selectedCategory ? 'No recipes match your search' : 'No recipes found'}
           </div>
         )}
       </div>

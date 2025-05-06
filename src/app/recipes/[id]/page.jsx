@@ -7,12 +7,13 @@ import { useParams } from 'next/navigation';
 // Sample recipe data (same as in the list page)
 const sampleRecipes = [
   {
-    _id: '1',
+    _id: 'sample_1',
     name: 'Classic Margherita Pizza',
     description: 'Traditional Italian pizza with fresh basil, mozzarella, and tomato sauce. Made with hand-tossed dough and baked in a wood-fired oven.',
     preparationTime: 45,
     portionSize: '2 servings',
     category: 'Italian',
+    isSample: true,
     ingredients: [
       { name: 'Pizza Dough', quantity: '250', unit: 'g' },
       { name: 'Mozzarella', quantity: '200', unit: 'g' },
@@ -29,12 +30,13 @@ const sampleRecipes = [
     ]
   },
   {
-    _id: '2',
+    _id: 'sample_2',
     name: 'Chicken Teriyaki Bowl',
     description: 'Tender chicken pieces glazed with homemade teriyaki sauce, served over steamed rice with vegetables.',
     preparationTime: 30,
     portionSize: '4 servings',
     category: 'Japanese',
+    isSample: true,
     ingredients: [
       { name: 'Chicken Thighs', quantity: '500', unit: 'g' },
       { name: 'Soy Sauce', quantity: '60', unit: 'ml' },
@@ -50,12 +52,13 @@ const sampleRecipes = [
     ]
   },
   {
-    _id: '3',
+    _id: 'sample_3',
     name: 'Fresh Garden Salad',
     description: 'Crisp mixed greens with seasonal vegetables and a light vinaigrette dressing. Perfect as a side dish or light meal.',
     preparationTime: 15,
     portionSize: '3 servings',
     category: 'Salads',
+    isSample: true,
     ingredients: [
       { name: 'Mixed Greens', quantity: '200', unit: 'g' },
       { name: 'Cherry Tomatoes', quantity: '100', unit: 'g' },
@@ -79,14 +82,31 @@ export default function RecipePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate API fetch with sample data
-    setTimeout(() => {
-      const foundRecipe = sampleRecipes.find(r => r._id === params.id);
-      if (foundRecipe) {
-        setRecipe(foundRecipe);
+    const fetchRecipe = async () => {
+      try {
+        // Check if it's a sample recipe first
+        const sampleRecipe = sampleRecipes.find(r => r._id === params.id);
+        if (sampleRecipe) {
+          setRecipe(sampleRecipe);
+          setLoading(false);
+          return;
+        }
+
+        // If not a sample recipe, fetch from API
+        const response = await fetch(`/api/recipes/${params.id}`);
+        if (!response.ok) {
+          throw new Error('Recipe not found');
+        }
+        const apiRecipe = await response.json();
+        setRecipe(apiRecipe);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 500); // Small delay to show loading state
+    };
+
+    fetchRecipe();
   }, [params.id]);
 
   if (loading) {
@@ -139,7 +159,12 @@ export default function RecipePage() {
       <div className="p-4 space-y-6">
         {/* Recipe Header */}
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold">{recipe.name}</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold">{recipe.name}</h1>
+            {recipe.isSample && (
+              <span className="badge badge-ghost">Sample</span>
+            )}
+          </div>
           <p className="text-base-content/70">{recipe.description}</p>
           <div className="flex items-center gap-4 text-sm text-base-content/60">
             <span>⏱️ {recipe.preparationTime} mins</span>
