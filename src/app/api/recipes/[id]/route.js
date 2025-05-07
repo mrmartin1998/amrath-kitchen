@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
 
     if (!recipe) {
       return NextResponse.json(
-        { error: 'Recipe not found' },
+        { message: 'Recipe not found' },
         { status: 404 }
       );
     }
@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
     return NextResponse.json(recipe);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch recipe' },
+      { message: error.message },
       { status: 500 }
     );
   }
@@ -40,13 +40,13 @@ export async function PUT(request, { params }) {
 
     const recipe = await Recipe.findByIdAndUpdate(
       params.id,
-      { ...body },
+      { ...body, updatedAt: new Date() },
       { new: true, runValidators: true }
     ).select('-__v');
 
     if (!recipe) {
       return NextResponse.json(
-        { error: 'Recipe not found' },
+        { message: 'Recipe not found' },
         { status: 404 }
       );
     }
@@ -54,7 +54,7 @@ export async function PUT(request, { params }) {
     return NextResponse.json(recipe);
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to update recipe' },
+      { message: error.message },
       { status: 500 }
     );
   }
@@ -68,18 +68,15 @@ export async function DELETE(request, { params }) {
 
     if (!recipe) {
       return NextResponse.json(
-        { error: 'Recipe not found' },
+        { message: 'Recipe not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(
-      { message: 'Recipe deleted successfully' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Recipe deleted successfully' });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to delete recipe' },
+      { message: error.message },
       { status: 500 }
     );
   }

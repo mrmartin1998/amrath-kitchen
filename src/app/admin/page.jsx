@@ -65,11 +65,18 @@ export default function AdminPage() {
 
   const handleDelete = async (id) => {
     try {
-      // In real implementation, this would be an API call
+      const response = await fetch(`/api/recipes/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Failed to delete recipe');
+
+      // Remove the recipe from the local state
       setRecipes(recipes.filter(recipe => recipe._id !== id));
       setDeleteConfirm(null);
     } catch (err) {
       setError(err.message);
+      setDeleteConfirm(null);
     }
   };
 
