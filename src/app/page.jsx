@@ -52,7 +52,7 @@ export default function Home() {
             </div>
             {/* Detailed Instructions */}
             <div className="card bg-base-200 w-full">
-              <div className="card-body">
+            <div className="card-body">
                 <h3 className="card-title">
                   <span className="text-2xl">📝</span>
                   Detailed Instructions

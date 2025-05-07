@@ -110,7 +110,7 @@ export default function AdminPage() {
           </div>
           <div className="flex-none">
             <Link href="/admin/new" className="btn btn-primary btn-sm w-full sm:w-auto">
-              Add New Recipe
+              Add Recipe
             </Link>
           </div>
         </div>

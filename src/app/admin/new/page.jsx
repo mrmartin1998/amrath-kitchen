@@ -20,6 +20,9 @@ export default function NewRecipePage() {
     category: ''
   });
 
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadError, setUploadError] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -77,18 +80,39 @@ export default function NewRecipePage() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 5) {
+      setUploadError('Maximum 5 images allowed');
+      return;
+    }
+    setUploadError(null);
+    setSelectedImages(files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setUploadError(null);
 
     try {
+      // Create FormData for multipart form submission
+      const formDataToSend = new FormData();
+      
+      // Append recipe data as JSON
+      const recipeData = { ...formData };
+      delete recipeData.photos; // Remove photos array as we'll handle it separately
+      formDataToSend.append('recipe', JSON.stringify(recipeData));
+      
+      // Append each selected image
+      selectedImages.forEach((file, index) => {
+        formDataToSend.append('photos', file);
+      });
+
       const response = await fetch('/api/recipes', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend, // Send as FormData
       });
 
       if (!response.ok) throw new Error('Failed to create recipe');
@@ -305,16 +329,44 @@ export default function NewRecipePage() {
               placeholder="https://..."
             />
           </div>
-          {/* Photo upload will be implemented later */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Photos (coming soon)</span>
+              <span className="label-text">Photos (optional, max 5)</span>
             </label>
             <input
               type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
               className="file-input file-input-bordered w-full"
-              disabled
             />
+            {uploadError && (
+              <label className="label">
+                <span className="label-text-alt text-error">{uploadError}</span>
+              </label>
+            )}
+            {selectedImages.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {selectedImages.map((file, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${index + 1}`}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedImages(selectedImages.filter((_, i) => i !== index));
+                      }}
+                      className="absolute -top-2 -right-2 btn btn-circle btn-xs btn-error"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
