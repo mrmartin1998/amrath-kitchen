@@ -102,21 +102,21 @@ export default function NewRecipePage() {
   };
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 overflow-x-hidden">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-base-100 shadow-sm">
-        <div className="navbar px-4">
+        <div className="navbar px-2 sm:px-4">
           <div className="flex-1">
             <Link href="/admin" className="btn btn-ghost btn-sm">
               ← Back
             </Link>
-            <h1 className="text-xl font-bold ml-4">New Recipe</h1>
+            <h1 className="text-xl font-bold ml-2 sm:ml-4">New Recipe</h1>
           </div>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="p-4 space-y-6">
+      <form onSubmit={handleSubmit} className="p-2 sm:p-4 space-y-8 max-w-xl mx-auto w-full">
         {error && (
           <div className="alert alert-error">
             <span>{error}</span>
@@ -125,7 +125,7 @@ export default function NewRecipePage() {
 
         {/* Basic Info */}
         <div className="space-y-4">
-          <div className="form-control">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Recipe Name</span>
             </label>
@@ -134,12 +134,12 @@ export default function NewRecipePage() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="input input-bordered"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
-          <div className="form-control">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Description</span>
             </label>
@@ -147,13 +147,13 @@ export default function NewRecipePage() {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="textarea textarea-bordered h-24"
+              className="textarea textarea-bordered h-24 w-full"
               required
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="form-control">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Preparation Time (mins)</span>
               </label>
@@ -162,13 +162,13 @@ export default function NewRecipePage() {
                 name="preparationTime"
                 value={formData.preparationTime}
                 onChange={handleChange}
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 required
                 min="0"
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Portion Size</span>
               </label>
@@ -177,13 +177,13 @@ export default function NewRecipePage() {
                 name="portionSize"
                 value={formData.portionSize}
                 onChange={handleChange}
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 required
               />
             </div>
           </div>
 
-          <div className="form-control">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Category</span>
             </label>
@@ -192,7 +192,7 @@ export default function NewRecipePage() {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="input input-bordered"
+              className="input input-bordered w-full"
               required
             />
           </div>
@@ -200,53 +200,53 @@ export default function NewRecipePage() {
 
         {/* Ingredients */}
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
             <h2 className="text-lg font-semibold">Ingredients</h2>
             <button
               type="button"
               onClick={addIngredient}
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm w-full sm:w-auto"
             >
               Add Ingredient
             </button>
           </div>
 
           {formData.ingredients.map((ingredient, index) => (
-            <div key={index} className="flex gap-2 items-start">
+            <div key={index} className="flex flex-col sm:flex-row gap-2 items-stretch w-full">
               <div className="form-control flex-1">
                 <input
                   type="text"
                   value={ingredient.name}
                   onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
                   placeholder="Ingredient name"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   required
                 />
               </div>
-              <div className="form-control w-24">
+              <div className="form-control w-full sm:w-24">
                 <input
                   type="text"
                   value={ingredient.quantity}
                   onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
                   placeholder="Qty"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   required
                 />
               </div>
-              <div className="form-control w-24">
+              <div className="form-control w-full sm:w-24">
                 <input
                   type="text"
                   value={ingredient.unit}
                   onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
                   placeholder="Unit"
-                  className="input input-bordered"
+                  className="input input-bordered w-full"
                   required
                 />
               </div>
               <button
                 type="button"
                 onClick={() => removeIngredient(index)}
-                className="btn btn-sm btn-ghost"
+                className="btn btn-ghost btn-sm w-full sm:w-auto"
               >
                 ✕
               </button>
@@ -256,32 +256,32 @@ export default function NewRecipePage() {
 
         {/* Instructions */}
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
             <h2 className="text-lg font-semibold">Instructions</h2>
             <button
               type="button"
               onClick={addInstruction}
-              className="btn btn-sm btn-primary"
+              className="btn btn-primary btn-sm w-full sm:w-auto"
             >
               Add Step
             </button>
           </div>
 
           {formData.instructions.map((instruction, index) => (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex gap-2 items-start w-full">
               <span className="font-bold text-primary mt-2">{index + 1}.</span>
               <div className="form-control flex-1">
                 <textarea
                   value={instruction}
                   onChange={(e) => handleInstructionChange(index, e.target.value)}
-                  className="textarea textarea-bordered"
+                  className="textarea textarea-bordered w-full"
                   required
                 />
               </div>
               <button
                 type="button"
                 onClick={() => removeInstruction(index)}
-                className="btn btn-sm btn-ghost"
+                className="btn btn-ghost btn-sm"
               >
                 ✕
               </button>
@@ -292,8 +292,7 @@ export default function NewRecipePage() {
         {/* Media */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold">Media</h2>
-          
-          <div className="form-control">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Video URL (optional)</span>
             </label>
@@ -302,13 +301,12 @@ export default function NewRecipePage() {
               name="videoUrl"
               value={formData.videoUrl}
               onChange={handleChange}
-              className="input input-bordered"
+              className="input input-bordered w-full"
               placeholder="https://..."
             />
           </div>
-
           {/* Photo upload will be implemented later */}
-          <div className="form-control">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Photos (coming soon)</span>
             </label>
@@ -321,13 +319,13 @@ export default function NewRecipePage() {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end gap-4">
-          <Link href="/admin" className="btn btn-ghost">
+        <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 w-full">
+          <Link href="/admin" className="btn btn-ghost w-full sm:w-auto">
             Cancel
           </Link>
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary w-full sm:w-auto"
             disabled={loading}
           >
             {loading ? (

@@ -138,17 +138,17 @@ export default function RecipePage() {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 overflow-x-hidden">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-base-100 shadow-sm">
-        <div className="navbar px-4">
+        <div className="navbar px-2 sm:px-4">
           <div className="flex-1">
             <Link href="/recipes" className="btn btn-ghost btn-sm">
               ← Back
             </Link>
           </div>
           <div className="flex-none">
-            <Link href="/admin" className="btn btn-primary btn-sm">
+            <Link href="/admin" className="btn btn-primary btn-sm w-full sm:w-auto">
               Admin
             </Link>
           </div>
@@ -156,17 +156,17 @@ export default function RecipePage() {
       </div>
 
       {/* Recipe Content */}
-      <div className="p-4 space-y-6">
+      <div className="p-2 sm:p-4 space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
         {/* Recipe Header */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
             <h1 className="text-2xl font-bold">{recipe.name}</h1>
             {recipe.isSample && (
               <span className="badge badge-ghost">Sample</span>
             )}
           </div>
           <p className="text-base-content/70">{recipe.description}</p>
-          <div className="flex items-center gap-4 text-sm text-base-content/60">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-base-content/60">
             <span>⏱️ {recipe.preparationTime} mins</span>
             <span>👥 {recipe.portionSize}</span>
             <span>🏷️ {recipe.category}</span>
@@ -175,13 +175,13 @@ export default function RecipePage() {
 
         {/* Photos */}
         {recipe.photos && recipe.photos.length > 0 && (
-          <div className="carousel carousel-center max-w-full p-4 space-x-4 bg-base-200 rounded-box">
+          <div className="carousel carousel-center max-w-full p-2 sm:p-4 space-x-2 sm:space-x-4 bg-base-200 rounded-box overflow-x-auto">
             {recipe.photos.map((photo, index) => (
               <div key={index} className="carousel-item">
                 <img
                   src={photo}
                   alt={`${recipe.name} - Photo ${index + 1}`}
-                  className="rounded-box h-48 w-48 object-cover"
+                  className="rounded-box h-32 w-32 sm:h-48 sm:w-48 object-cover"
                 />
               </div>
             ))}
@@ -204,11 +204,11 @@ export default function RecipePage() {
           <h2 className="text-xl font-semibold">Ingredients</h2>
           <ul className="space-y-2">
             {recipe.ingredients.map((ingredient, index) => (
-              <li key={index} className="flex items-center gap-2">
-                <span className="w-24 text-base-content/70">
+              <li key={index} className="flex flex-col xs:flex-row xs:items-center gap-1 xs:gap-2 w-full">
+                <span className="text-base-content/70 min-w-[80px] xs:w-24">
                   {ingredient.quantity} {ingredient.unit}
                 </span>
-                <span>{ingredient.name}</span>
+                <span className="break-words flex-1">{ingredient.name}</span>
               </li>
             ))}
           </ul>
@@ -217,11 +217,11 @@ export default function RecipePage() {
         {/* Instructions */}
         <div className="space-y-2">
           <h2 className="text-xl font-semibold">Instructions</h2>
-          <ol className="space-y-4">
+          <ol className="space-y-2 sm:space-y-4">
             {recipe.instructions.map((instruction, index) => (
-              <li key={index} className="flex gap-4">
+              <li key={index} className="flex gap-2 sm:gap-4 items-start w-full">
                 <span className="font-bold text-primary">{index + 1}.</span>
-                <span>{instruction}</span>
+                <span className="break-words flex-1">{instruction}</span>
               </li>
             ))}
           </ol>

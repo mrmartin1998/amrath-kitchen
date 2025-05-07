@@ -98,18 +98,18 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 overflow-x-hidden">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-base-100 shadow-sm">
-        <div className="navbar px-4">
+        <div className="navbar px-2 sm:px-4">
           <div className="flex-1">
             <Link href="/recipes" className="btn btn-ghost btn-sm">
               ← Recipes
             </Link>
-            <h1 className="text-xl font-bold ml-4">Recipe Management</h1>
+            <h1 className="text-xl font-bold ml-2 sm:ml-4">Recipe Management</h1>
           </div>
           <div className="flex-none">
-            <Link href="/admin/new" className="btn btn-primary btn-sm">
+            <Link href="/admin/new" className="btn btn-primary btn-sm w-full sm:w-auto">
               Add New Recipe
             </Link>
           </div>
@@ -117,8 +117,8 @@ export default function AdminPage() {
       </div>
 
       {/* Search and Filter */}
-      <div className="p-4 bg-base-200">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="p-2 sm:p-4 bg-base-200">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <div className="flex-1">
             <input
               type="text"
@@ -144,13 +144,13 @@ export default function AdminPage() {
       </div>
 
       {/* Recipe List */}
-      <div className="p-4">
-        <div className="grid gap-4">
+      <div className="p-2 sm:p-4">
+        <div className="grid gap-2 sm:gap-4">
           {filteredRecipes.map((recipe) => (
-            <div key={recipe._id} className="card bg-base-200 shadow-sm">
-              <div className="card-body p-4">
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                  <div className="flex-1">
+            <div key={recipe._id} className="card bg-base-200 shadow-sm w-full">
+              <div className="card-body p-2 sm:p-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-4 w-full">
+                  <div className="flex-1 w-full">
                     <h2 className="card-title text-lg">{recipe.name}</h2>
                     <p className="text-sm text-base-content/70 line-clamp-2">
                       {recipe.description}
@@ -165,22 +165,22 @@ export default function AdminPage() {
                   </div>
                   
                   {/* Actions */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     <Link 
                       href={`/recipes/${recipe._id}`}
-                      className="btn btn-sm btn-ghost"
+                      className="btn btn-sm btn-ghost w-full sm:w-auto"
                     >
                       View
                     </Link>
                     <Link 
                       href={`/admin/edit/${recipe._id}`}
-                      className="btn btn-sm btn-ghost"
+                      className="btn btn-sm btn-ghost w-full sm:w-auto"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={() => setDeleteConfirm(recipe._id)}
-                      className="btn btn-sm btn-error"
+                      className="btn btn-sm btn-error w-full sm:w-auto"
                     >
                       Delete
                     </button>

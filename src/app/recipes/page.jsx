@@ -133,15 +133,15 @@ export default function RecipesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 overflow-x-hidden">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-base-100 shadow-sm">
-        <div className="navbar px-4">
+        <div className="navbar px-2 sm:px-4">
           <div className="flex-1">
             <h1 className="text-xl font-bold">Recipes</h1>
           </div>
           <div className="flex-none">
-            <Link href="/admin" className="btn btn-primary btn-sm">
+            <Link href="/admin" className="btn btn-primary btn-sm w-full sm:w-auto">
               Admin
             </Link>
           </div>
@@ -149,8 +149,8 @@ export default function RecipesPage() {
       </div>
 
       {/* Search and Filter */}
-      <div className="p-4 bg-base-200">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="p-2 sm:p-4 bg-base-200">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <div className="flex-1">
             <input
               type="text"
@@ -176,16 +176,16 @@ export default function RecipesPage() {
       </div>
 
       {/* Recipe List */}
-      <div className="p-4 space-y-4">
+      <div className="p-2 sm:p-4 space-y-2 sm:space-y-4">
         {filteredRecipes.map((recipe) => (
           <Link 
             href={`/recipes/${recipe._id}`} 
             key={recipe._id}
-            className="block"
+            className="block w-full"
           >
-            <div className="card bg-base-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="card-body p-4">
-                <div className="flex items-center gap-2">
+            <div className="card bg-base-200 shadow-sm hover:shadow-md transition-shadow w-full">
+              <div className="card-body p-2 sm:p-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
                   <h2 className="card-title text-lg">{recipe.name}</h2>
                   {recipe.isSample && (
                     <span className="badge badge-ghost">Sample</span>
@@ -194,7 +194,7 @@ export default function RecipesPage() {
                 <p className="text-sm text-base-content/70 line-clamp-2">
                   {recipe.description}
                 </p>
-                <div className="flex items-center gap-2 mt-2 text-sm text-base-content/60">
+                <div className="flex flex-wrap items-center gap-2 mt-2 text-sm text-base-content/60">
                   <span>⏱️ {recipe.preparationTime} mins</span>
                   <span>•</span>
                   <span>👥 {recipe.portionSize}</span>
