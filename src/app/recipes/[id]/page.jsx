@@ -80,6 +80,7 @@ export default function RecipePage() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -177,14 +178,37 @@ export default function RecipePage() {
         {recipe.photos && recipe.photos.length > 0 && (
           <div className="carousel carousel-center max-w-full p-2 sm:p-4 space-x-2 sm:space-x-4 bg-base-200 rounded-box overflow-x-auto">
             {recipe.photos.map((photo, index) => (
-              <div key={index} className="carousel-item">
+              <div key={index} className="carousel-item relative cursor-pointer" onClick={() => setSelectedImage(photo)}>
                 <img
                   src={photo}
                   alt={`${recipe.name} - Photo ${index + 1}`}
-                  className="rounded-box h-32 w-32 sm:h-48 sm:w-48 object-cover"
+                  className="rounded-box h-32 w-32 sm:h-48 sm:w-48 object-cover hover:opacity-90 transition-opacity"
                 />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                  <span className="text-white bg-black bg-opacity-50 px-2 py-1 rounded">Click to enlarge</span>
+                </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Image Modal */}
+        {selectedImage && (
+          <div className="modal modal-open" onClick={() => setSelectedImage(null)}>
+            <div className="modal-box relative max-w-5xl w-full h-full flex items-center justify-center bg-base-100/80 p-0">
+              <button
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10"
+                onClick={() => setSelectedImage(null)}
+              >
+                ✕
+              </button>
+              <img
+                src={selectedImage}
+                alt="Enlarged view"
+                className="max-w-full max-h-[80vh] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
           </div>
         )}
 
